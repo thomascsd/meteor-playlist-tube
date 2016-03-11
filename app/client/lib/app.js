@@ -1,4 +1,4 @@
 'use strict';
 'global angular';
 
-let app = angular.module('tubeApp', []);
+let app = angular.module('tubeApp', ['ngStorage']);
