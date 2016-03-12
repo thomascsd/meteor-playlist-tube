@@ -1,7 +1,55 @@
 <head>
-    <title>Playlist Tube</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title>Playlist Tube</title>
+
 </head>
 <body>
-    
+  <body ng-app="tubeApp">
+      <div ng-controller="mainController">
+          <div id="mainCotainer" ng-show="mainVisible">
+              <div class="blue white-text z-depth-1">
+                  <div class="row">
+                      <div class="center col s12">
+                          <h5>
+                              Playlist Tube
+                          </h5>
+
+                      </div>
+                      <div class="col s12">
+                          <ul class="tabs" tube-tabs>
+                              <li class="tab col s6 blue">
+                                  <a href="#local" ng-click="localSelected()" class="white-text">
+                                      <i class="mdi-av-my-library-music"></i>Local
+                                  </a>
+                              </li>
+                              <li class="tab col s6 blue">
+                                  <a href="#playlist" ng-click="playlistSelected()" class="white-text">
+                                      <i class="mdi-av-queue-music"></i>My YouTube
+                                  </a>
+                              </li>
+                          </ul>
+
+                      </div>
+
+                  </div>
+              </div>
+              <div class="container">
+                  <div id="local" ng-include="'client/views/localTemplate.html'" ng-show="tab1">
+                  </div>
+                  <div id="playlist" ng-include="playlistUrl" ng-show="tab2">
+                  </div>
+              </div>
+
+          </div>
+          <div id="detailContainer">
+              <div ng-include="detailUrl" ng-show="detailVisible"></div>
+          </div>
+          <div id="videoContainer">
+              <div ng-include="videoUrl" ng-show="videoVisible"></div>
+          </div>
+
+
+          <footer class="blue mainFooter"></footer>
+      </div>
 </body>

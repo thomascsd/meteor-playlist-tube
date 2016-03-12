@@ -3,8 +3,8 @@
 const app = angular.module('tubeApp');
 
 /** 記錄User的資料 */
-app.factory('userDataFactory', ['$localStorage', function($localStorage) {
-    var userData = {
+app.factory('userDataService', ['$localStorage', function($localStorage) {
+    const userData = {
         currentPlaylistID: '',
         currentVideo: {},
 
