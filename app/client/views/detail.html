@@ -1,0 +1,26 @@
+<div ng-controller="detailController">
+    <div class="row">
+        <div class="col s12 blue z-depth-1">
+            <a href="javascript:void(0)" class="white-text" ng-click="goBack()"><i class="mdi-navigation-arrow-back small"></i></a>
+
+        </div>
+    </div>
+    <tube-preloader ng-show="detail.isBusy"></tube-preloader>
+    <div class="container" infinite-scroll="detail.list()" infinite-scroll-disabled="detail.isBusy" infinite-scroll-distance="1">
+        <ul class="collection">
+            <li class="collection-item avatar row" ng-click="playVideo(item)" ng-repeat="item in detail.items">
+                <div class="col s2">
+                    <img src="{{item.snippet.thumbnails.default.url}}" alt="" class="circle" />
+                </div>
+                <div class="col s10">
+                    <span class="itemTitle">
+                        {{item.snippet.title}}
+                    </span>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+
+
+</div>

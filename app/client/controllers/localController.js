@@ -2,17 +2,16 @@
 
 const app = angular.module('tubeApp');
 
-app.controller('localController', ['$scope', 'youtubeService', 'userDataService', 'appConfig', localController]);
+app.controller('localController', ['$scope', 'youtubeService', 'userDataService', localController]);
 
 /** Local controller */
-function localController($scope, youtubeService, userDataService, appConfig) {
+function localController($scope, youtubeService, userDataService) {
     var token = userDataService.token();
     var newToken;
-    $scope.debug = appConfig.debug;
     $scope.items = userDataService.list.getItems();
 
     if (token) {
-        if (appConfig.debug) {
+        /*if (appConfig.debug) {
             //取得token值，不一樣時做替換
             newToken = youtubeService.getToken();
             if (newToken !== token) {
@@ -20,7 +19,7 @@ function localController($scope, youtubeService, userDataService, appConfig) {
                 userDataService.token(token);
             }
 
-        }
+        }*/
 
     }
 

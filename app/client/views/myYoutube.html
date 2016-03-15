@@ -1,0 +1,21 @@
+<section ng-controller="myYoutubeController">
+    <ul class="collection" ng-show="items.length !== 0">
+        <li class="collection-item avatar row" ng-repeat="item in items">
+            <div class="col s2" ng-click="gotoDetail(item)">
+                <img src="{{item.snippet.thumbnails.default.url}}" alt="" class="circle" />
+            </div>
+            <div class="col s9 sec" ng-click="gotoDetail(item)">
+                <span class="title">
+                    {{item.snippet.title}}
+                </span>
+            </div>
+            <div class="col s1">
+                <a href="javascript:void(0)" class="secondary-content" ng-click="addItem(item)"><i class="mdi-av-playlist-add small"></i></a>
+            </div>
+
+        </li>
+    </ul>
+    <div class="valign-wrapper" ng-show="items.length === 0">
+        <button class="btn waves-effect waves-light valign" ng-click="login()">Login</button>
+    </div>
+</section>
