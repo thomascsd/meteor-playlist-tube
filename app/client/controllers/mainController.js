@@ -38,14 +38,14 @@ function mainController($scope, youtubeService) {
         if (accessToken) {
             enableLocal = false;
         }
-    }*/
+    }
 
     if (enableLocal) {
         $scope.localSelected();
     }
     else {
         $scope.playlistSelected();
-    }
+    }*/
 
     function goDetail(e, data) {
         $scope.detailVisible = true;

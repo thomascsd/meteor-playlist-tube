@@ -15,7 +15,7 @@
                 Playlist Tube
               </h5>
         </md-toolbar>
-        <md-tabs md-swipe-content="true" >
+        <md-tabs md-swipe-content="true">
           <md-tab md-on-select="localSelected()">
             <md-tab-label>
               <md-icon></md-icon> Local
@@ -33,20 +33,6 @@
             </md-tab-body>
           </md-tab>
         </md-tabs>
-
-        <ul class="tabs" tube-tabs>
-          <li class="tab col s6 blue">
-            <a href="#local" ng-click="" class="white-text">
-
-            </a>
-          </li>
-          <li class="tab col s6 blue">
-            <a href="#playlist" ng-click="" class="white-text">
-              <i class="mdi-av-queue-music"></i>My YouTube
-            </a>
-          </li>
-        </ul>
-
       </div>
       <div id="detailContainer">
         <div ng-include="detailUrl" ng-show="detailVisible"></div>
