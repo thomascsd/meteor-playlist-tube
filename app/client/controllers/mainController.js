@@ -27,18 +27,18 @@ function mainController($scope, youtubeService) {
         $scope.tab2 = true;
 
         if ($scope.playlistUrl === '') {
-            $scope.playlistUrl = 'templates/myYoutubeTemplate.html';
+            $scope.playlistUrl = 'client/views/myYoutube.html';
         }
     };
 
-    if (true) { //appConfig.debug
+    /*if (true) { //appConfig.debug
         //debug
         var accessToken = youtubeService.getToken();
 
         if (accessToken) {
             enableLocal = false;
         }
-    }
+    }*/
 
     if (enableLocal) {
         $scope.localSelected();

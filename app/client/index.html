@@ -1,45 +1,51 @@
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
   <title>Playlist Tube</title>
 
 </head>
+
 <body>
+
   <body ng-app="tubeApp">
     <div ng-controller="mainController">
       <div id="mainCotainer" ng-show="mainVisible">
-        <div>
-          <div >
-            <div class="center col s12">
-              <h5>
+        <md-toolbar>
+          <h5>
                 Playlist Tube
               </h5>
+        </md-toolbar>
+        <md-tabs md-swipe-content="true" >
+          <md-tab md-on-select="localSelected()">
+            <md-tab-label>
+              <md-icon></md-icon> Local
+            </md-tab-label>
+            <md-tab-body>
+              <div id="local" ng-include="'client/views/local.html'" ng-show="tab1"></div>
+            </md-tab-body>
+          </md-tab>
+          <md-tab md-on-select="playlistSelected()">
+            <md-tab-label>
+              <md-icon></md-icon> My YouTube
+            </md-tab-label>
+            <md-tab-body>
+              <div id="playlist" ng-include="playlistUrl" ng-show="tab2"></div>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
 
-            </div>
-            <div class="">
-              <md-tabs></md-tabs>
+        <ul class="tabs" tube-tabs>
+          <li class="tab col s6 blue">
+            <a href="#local" ng-click="" class="white-text">
 
-              <ul class="tabs" tube-tabs>
-                <li class="tab col s6 blue">
-                  <a href="#local" ng-click="localSelected()" class="white-text">
-                    <i class="mdi-av-my-library-music"></i>Local
-                  </a>
-                </li>
-                <li class="tab col s6 blue">
-                  <a href="#playlist" ng-click="playlistSelected()" class="white-text">
-                    <i class="mdi-av-queue-music"></i>My YouTube
-                  </a>
-                </li>
-              </ul>
-
-            </div>
-
-          </div>
-        </div>
-        <div class="container">
-          <div id="local" ng-include="'client/views/localTemplate.html'" ng-show="tab1"></div>
-          <div id="playlist" ng-include="playlistUrl" ng-show="tab2"></div>
-        </div>
+            </a>
+          </li>
+          <li class="tab col s6 blue">
+            <a href="#playlist" ng-click="" class="white-text">
+              <i class="mdi-av-queue-music"></i>My YouTube
+            </a>
+          </li>
+        </ul>
 
       </div>
       <div id="detailContainer">
