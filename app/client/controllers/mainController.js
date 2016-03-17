@@ -51,14 +51,14 @@ function mainController($scope, youtubeService) {
         $scope.detailVisible = true;
         $scope.mainVisible = false;
         $scope.videoVisible = false;
-        $scope.detailUrl = 'templates/detailTemplate.html';
+        $scope.detailUrl = 'client/viewss/detail.html';
     }
 
     function goVideo(e, data) {
         $scope.videoVisible = true;
         $scope.mainVisible = false;
         $scope.detailVisible = false;
-        $scope.videoUrl = 'templates/videoTemplate.html';
+        $scope.videoUrl = 'client/views/video.html';
     }
 
     function goBack(e) {

@@ -10,9 +10,9 @@ function myYoutubeController($scope, youtubeService, userDataService) {
     var newToken;
 
     if (token) {
-        alert('token:' + token);
+        //alert('token:' + token);
 
-        /*if (appConfig.debug) { 
+        /*if (appConfig.debug) {
             //取得token值，不一樣時做替換
             newToken = youtubeService.getToken();
             if (newToken !== token) {
@@ -38,7 +38,7 @@ function myYoutubeController($scope, youtubeService, userDataService) {
 
     $scope.login = function() {
         youtubeService.login().then(function(token) {
-            alert('myYoutubeController - token:' + token);
+            //alert('myYoutubeController - token:' + token);
             userDataService.token(token);
             getPlaylists(token);
         }).catch(function(data) {
@@ -65,7 +65,7 @@ function myYoutubeController($scope, youtubeService, userDataService) {
     };
 
     function getPlaylists(token) {
-        alert('exc getPlaylists');
+        //alert('exc getPlaylists');
         youtubeService.getPlaylists(token).then(function(data) {
             $scope.items = data.data.items;
         });

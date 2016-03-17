@@ -1,18 +1,20 @@
 <md-content layout="row" layout-align="center center" ng-controller="localController">
-  <div flex="85">
+  <div flex="90">
     <div>
       <a href="javascript:void(0)" ng-click="deleteItems()">Delete</a>
     </div>
     <md-list>
-      <md-list-item ng-repeat="item in items">
-        <div ng-click="goDetail(item)">
-          <img src="{{item.snippet.thumbnails.default.url}}" alt="" class="md-avatar" />
-          <span class="title">
-                    {{item.snippet.title}}
-          </span>
+      <md-list-item class="md-2-line" ng-repeat="item in items">
+        <img src="{{item.snippet.thumbnails.default.url}}" alt="" class="md-avatar" />
+        <div class="md-list-item-text" ng-click="goDetail(item)">
+          <h3 class="title">
+            {{item.snippet.title}}
+          </h3>
         </div>
         <div>
-          <a href="javascript:void(0)" class="" ng-click=""><md-icon></md-icon></a>
+          <a href="javascript:void(0)" class="" ng-click="">
+            <md-icon></md-icon>
+          </a>
         </div>
       </md-list-item>
     </md-list>

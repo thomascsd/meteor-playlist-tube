@@ -1,0 +1,35 @@
+<div ng-controller="mainController">
+    <div id="mainCotainer" ng-show="mainVisible">
+        <md-toolbar>
+            <h5>
+                Playlist Tube
+              </h5>
+        </md-toolbar>
+        <md-tabs md-swipe-content="true" md-stretch-tabs="always">
+            <md-tab md-on-select="localSelected()">
+                <md-tab-label>
+                    <md-icon></md-icon> Local
+                </md-tab-label>
+                <md-tab-body>
+                    <div id="local" ng-include="'client/views/local.html'"></div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="playlistSelected()">
+                <md-tab-label>
+                    <md-icon></md-icon> My YouTube
+                </md-tab-label>
+                <md-tab-body>
+                    <div id="playlist" ng-include="playlistUrl"></div>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </div>
+    <div id="detailContainer">
+        <div ng-include="detailUrl" ng-show="detailVisible"></div>
+    </div>
+    <div id="videoContainer">
+        <div ng-include="videoUrl" ng-show="videoVisible"></div>
+    </div>
+
+    <footer class="mainFooter"></footer>
+</div>

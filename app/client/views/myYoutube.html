@@ -1,5 +1,5 @@
 <md-content layout="row" layout-align="center center" ng-controller="myYoutubeController">
-  <div flex="85">
+  <div class="h100" flex="90" >
     <md-list ng-show="items.length !== 0">
       <md-list-item ng-repeat="item in items">
         <div class="col s2" ng-click="gotoDetail(item)">
@@ -15,8 +15,8 @@
         </div>
       </md-list-item>
     </md-list>
-    <div class="valign-wrapper" ng-show="items.length === 0">
-      <md-button ng-click="login()">Login</md-button>
+    <div layout="row" layout-align="center center" ng-show="items.length === 0">
+      <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
     </div>
 
   </div>
