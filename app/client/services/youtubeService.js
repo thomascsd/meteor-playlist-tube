@@ -2,12 +2,14 @@ const app = angular.module('tubeApp');
 
 
 /** 連結Youtube的service */
-app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', 'appConfig', function($http, $cordovaOauth, $q, appConfig) {
+app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $cordovaOauth, $q) {
     const appscopes = [
         encodeURIComponent('https://www.googleapis.com/auth/youtube'),
         encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly'),
         encodeURIComponent('https://www.googleapis.com/auth/youtubepartner')
     ];
+
+    const clientID = '';
 
     function PlaylistDetail(token, playlistID) {
         this.items = [];
@@ -57,12 +59,14 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', 'appConfig', func
     const service = {
         login: function() {
             var requestToken;
+            let debug = true;
+            const host = '';
 
-            if (!appConfig.debug) {
+            if (!debug) {
                 var defer = $q.defer();
 
                 //return $cordovaOauth.google(clientID, appscopes);
-                var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + appConfig.clientID + '&redirect_uri=http://localhost/callback&scope=' + appscopes.join(" ") + '&approval_prompt=force&response_type=token', '_blank', 'location=no');
+                var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientID + '&redirect_uri=http://localhost/callback&scope=' + appscopes.join(" ") + '&approval_prompt=force&response_type=token', '_blank', 'location=no');
 
                 ref.addEventListener('loadstart', function(event) {
                     if ((event.url).startsWith("http://localhost/callback")) {
@@ -90,9 +94,10 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', 'appConfig', func
                 });
 
                 return defer.promise;
-            } else {
-                const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + appConfig.clientID +
-                    '&redirect_uri=' + appConfig.host + '/callback&scope=' + appscopes.join(" ") +
+            }
+            else {
+                const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + clientID +
+                    '&redirect_uri=' + host + '/callback&scope=' + appscopes.join(" ") +
                     '&approval_prompt=force&response_type=token';
 
                 window.location.href = url;
