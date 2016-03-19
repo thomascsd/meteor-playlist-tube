@@ -1,5 +1,50 @@
+'use strict';
 const app = angular.module('tubeApp');
 
+function PlaylistDetail(token, playlistID) {
+    this.items = [];
+    this.pageToken = '';
+    this.isBusy = false;
+    this.token = token;
+    this.playlistID = playlistID;
+    this.totalResults = 0;
+    this.position = 0;
+}
+
+PlaylistDetail.prototype.list = function() {
+    var self = this;
+    if (this.isBusy) {
+        return;
+    }
+    this.isBusy = true;
+
+    if (this.totalResults !== 0 &&
+        this.position !== 0 &&
+        this.position === (this.totalResults - 1)) {
+        //目前item的index到達集合的長度時，不取得資料
+        this.isBusy = false;
+        return;
+    }
+
+
+    var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID + '&access_token=' + this.token;
+
+    if (this.pageToken) {
+        url += '&pageToken=' + this.pageToken;
+    }
+
+    $http.get(url).then(function(data) {
+        var yitems = data.data.items;
+        Array.prototype.push.apply(self.items, yitems);
+        self.pageToken = data.data.nextPageToken;
+        self.isBusy = false;
+        self.totalResults = data.data.pageInfo.totalResults;
+
+        var lastItem = yitems[yitems.length - 1];
+        self.position = lastItem.snippet.position;
+    });
+
+}
 
 /** 連結Youtube的service */
 app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $cordovaOauth, $q) {
@@ -11,62 +56,19 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
 
     const clientID = '';
 
-    function PlaylistDetail(token, playlistID) {
-        this.items = [];
-        this.pageToken = '';
-        this.isBusy = false;
-        this.token = token;
-        this.playlistID = playlistID;
-        this.totalResults = 0;
-        this.position = 0;
-    }
-
-    PlaylistDetail.prototype.list = function() {
-        var self = this;
-        if (this.isBusy) {
-            return;
-        }
-        this.isBusy = true;
-
-        if (this.totalResults !== 0 &&
-            this.position !== 0 &&
-            this.position === (this.totalResults - 1)) {
-            //目前item的index到達集合的長度時，不取得資料
-            this.isBusy = false;
-            return;
-        }
-
-
-        var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID + '&access_token=' + this.token;
-
-        if (this.pageToken) {
-            url += '&pageToken=' + this.pageToken;
-        }
-
-        $http.get(url).then(function(data) {
-            var yitems = data.data.items;
-            Array.prototype.push.apply(self.items, yitems);
-            self.pageToken = data.data.nextPageToken;
-            self.isBusy = false;
-            self.totalResults = data.data.pageInfo.totalResults;
-
-            var lastItem = yitems[yitems.length - 1];
-            self.position = lastItem.snippet.position;
-        });
-
-    }
-
     const service = {
         login: function() {
-            var requestToken;
+            let requestToken;
             let debug = true;
             const host = '';
+            const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + clientID +
+                '&redirect_uri=' + host + '/callback&scope=' + appscopes.join(" ") +
+                '&approval_prompt=force&response_type=token';
 
-            if (!debug) {
+            if (Meteor.isCordova) {
                 var defer = $q.defer();
-
                 //return $cordovaOauth.google(clientID, appscopes);
-                var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientID + '&redirect_uri=http://localhost/callback&scope=' + appscopes.join(" ") + '&approval_prompt=force&response_type=token', '_blank', 'location=no');
+                var ref = window.open(url, '_blank', 'location=no');
 
                 ref.addEventListener('loadstart', function(event) {
                     if ((event.url).startsWith("http://localhost/callback")) {
@@ -76,7 +78,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                         //alert('appConfig.clientID:' + appConfig.clientID);
                         //alert('appConfig.clientSecret:' + appConfig.clientSecret);
 
-                        defer.resolve(requestToken);
+                        return service.getToken(requestToken);
                         /*$http({
                                 method: "post",
                                 url: "https://accounts.google.com/o/oauth2/token",
@@ -94,33 +96,44 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                 });
 
                 return defer.promise;
-            }
-            else {
-                const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + clientID +
-                    '&redirect_uri=' + host + '/callback&scope=' + appscopes.join(" ") +
-                    '&approval_prompt=force&response_type=token';
-
+            } else {
                 window.location.href = url;
-
             }
 
         },
-        getToken: function() {
-            let callbackResponse = window.location.href.split("#")[1];
-            let responseParameters;
-            let accessToken = null;
+        getToken: function(requestToken) {
+            const defer = $q.defer();
+            const data = '';
 
-            if (callbackResponse) {
-                responseParameters = callbackResponse.split("&");
-                var parameterMap = {};
-                for (var i = 0; i < responseParameters.length; i++) {
-                    parameterMap[responseParameters[i].split("=")[0].replace('/', '')] = responseParameters[i].split("=")[1];
-                }
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-                accessToken = parameterMap.access_token;
+            if (!requestToken) {
+                const url = location.href;
+                requestToken = url.split("code=")[1];
             }
 
-            return accessToken;
+
+            data = "client_id=" + clientId + "&client_secret=" + clientSecret +
+                "&redirect_uri=http://localhost/callback" + "&grant_type=authorization_code" +
+                "&code=" + requestToken;
+
+            $http({
+                    method: "post",
+                    url: "https://accounts.google.com/o/oauth2/token",
+                    data: data
+                })
+                .success(function(data) {
+                    defer.resolve(data.access_token);
+                })
+                .error(function(data, status) {
+                    defer.reject("ERROR: " + JSON.stringify(data));
+                });
+
+            return defer.promise;
+        },
+        isLogingIn: function() {
+            const url = location.href;
+            return url.indexOf('callback') !== -1
         },
 
         refreshToken: function() {
@@ -146,3 +159,9 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
 
     return service;
 }]);
+
+if (typeof String.prototype.startsWith != 'function') {
+    String.prototype.startsWith = function(str) {
+        return this.indexOf(str) === 0;
+    };
+}

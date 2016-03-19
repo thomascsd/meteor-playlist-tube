@@ -6,9 +6,10 @@ app.controller('localController', ['$scope', 'youtubeService', 'userDataService'
 
 /** Local controller */
 function localController($scope, youtubeService, userDataService) {
-    var token = userDataService.token();
+    const token = userDataService.token();
     var newToken;
-    $scope.items = userDataService.list.getItems();
+    const list = userDataService.list;
+    $scope.items = list.getItems();
 
     if (token) {
         /*if (appConfig.debug) {
@@ -21,11 +22,15 @@ function localController($scope, youtubeService, userDataService) {
 
         }*/
 
+    } else if (youtubeService.isLogingIn()) {
+        youtubeService.getToken().then(function(data) {
+            userDataService.token(data);
+        });
     }
 
     $scope.deleteItems = function() {
-        userDataService.list.deleteItems();
-        $scope.items = userDataService.list.getItems();
+        list.deleteItems();
+        $scope.items = list.getItems();
     };
 
     $scope.goDetail = function(item) {
@@ -37,7 +42,7 @@ function localController($scope, youtubeService, userDataService) {
 
     /** local playlist reload*/
     function reloadLocal() {
-        $scope.items = userDataService.list.getItems();
+        $scope.items = list.getItems();
     }
 
     $scope.$on('tube.reloadLocal', reloadLocal);
