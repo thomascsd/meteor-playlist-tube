@@ -6,24 +6,26 @@ app.controller('localController', ['$scope', 'youtubeService', 'userDataService'
 
 /** Local controller */
 function localController($scope, youtubeService, userDataService) {
-    const token = userDataService.token();
+    let token = userDataService.token();
     var newToken;
     const list = userDataService.list;
     $scope.items = list.getItems();
 
     if (token) {
-        /*if (appConfig.debug) {
-            //取得token值，不一樣時做替換
-            newToken = youtubeService.getToken();
-            if (newToken !== token) {
-                token = newToken;
+        //if (appConfig.debug) {
+        //取得token值，不一樣時做替換
+        youtubeService.getToken().then((data) => {
+            if (data !== token) {
+                token = data;
                 userDataService.token(token);
             }
+        });
 
-        }*/
+
+        //}
 
     } else if (youtubeService.isLogingIn()) {
-        youtubeService.getToken().then(function(data) {
+        youtubeService.getToken().then((data) => {
             userDataService.token(data);
         });
     }

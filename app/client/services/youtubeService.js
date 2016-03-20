@@ -54,16 +54,18 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         encodeURIComponent('https://www.googleapis.com/auth/youtubepartner')
     ];
 
-    const clientID = '';
 
     const service = {
+        clientID: Meteor.settings.public.clientID,
+        secretID: Meteor.settings.public.secretID,
+        host: Meteor.settings.public.host,
         login: function() {
             let requestToken;
             let debug = true;
             const host = '';
-            const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + clientID +
-                '&redirect_uri=' + host + '/callback&scope=' + appscopes.join(" ") +
-                '&approval_prompt=force&response_type=token';
+            const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + service.clientID +
+                '&redirect_uri=' + service.host + '/callback&scope=' + appscopes.join(" ") +
+                '&approval_prompt=force&response_type=code';
 
             if (Meteor.isCordova) {
                 var defer = $q.defer();
@@ -103,7 +105,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         },
         getToken: function(requestToken) {
             const defer = $q.defer();
-            const data = '';
+            let data = '';
 
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -113,13 +115,13 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
             }
 
 
-            data = "client_id=" + clientId + "&client_secret=" + clientSecret +
-                "&redirect_uri=http://localhost/callback" + "&grant_type=authorization_code" +
+            data = "client_id=" + service.clientID + "&client_secret=" + service.secretID +
+                "&redirect_uri=" + service.host + "/callback" + "&grant_type=authorization_code" +
                 "&code=" + requestToken;
 
             $http({
                     method: "post",
-                    url: "https://accounts.google.com/o/oauth2/token",
+                    url: "https://www.googleapis.com/oauth2/v4/token",
                     data: data
                 })
                 .success(function(data) {
