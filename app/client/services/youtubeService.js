@@ -27,7 +27,8 @@ PlaylistDetail.prototype.list = function() {
     }
 
 
-    var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID + '&access_token=' + this.token;
+    var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID +
+    '&access_token=' + this.token;
 
     if (this.pageToken) {
         url += '&pageToken=' + this.pageToken;
@@ -63,7 +64,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
             let requestToken;
             let debug = true;
             const host = '';
-            const url = 'https://accounts.google.com/o/oauth2/auth?client_id=' + service.clientID +
+            const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + service.clientID +
                 '&redirect_uri=' + service.host + '/callback&scope=' + appscopes.join(" ") +
                 '&approval_prompt=force&response_type=code';
 
@@ -81,18 +82,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                         //alert('appConfig.clientSecret:' + appConfig.clientSecret);
 
                         return service.getToken(requestToken);
-                        /*$http({
-                                method: "post",
-                                url: "https://accounts.google.com/o/oauth2/token",
-                                data: "client_id=" + appConfig.clientID + "&client_secret=" + appConfig.clientSecret + "&redirect_uri=http://localhost/callback" + "&grant_type=authorization_code" + "&code=" + requestToken
-                            })
-            .success(function (data) {
-                                defer.resolve(data.access_token);
-                            })
-            .error(function (data, status) {
-                                defer.reject("ERROR: " + data);
-                            });*/
-
+   
                         ref.close();
                     }
                 });
