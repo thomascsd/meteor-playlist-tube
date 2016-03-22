@@ -7,7 +7,6 @@ app.controller('myYoutubeController', ['$scope', 'youtubeService', 'userDataServ
 function myYoutubeController($scope, youtubeService, userDataService) {
     $scope.items = [];
     var token = userDataService.token();
-    var newToken;
 
     if (token) {
         //alert('token:' + token);
@@ -51,8 +50,6 @@ function myYoutubeController($scope, youtubeService, userDataService) {
         var added = userDataService.list.add(item);
         if (!added) {
             //toast(item.snippet.title + ' added', 3000);
-
-
         }
     };
 

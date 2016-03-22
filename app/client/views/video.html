@@ -1,29 +1,24 @@
-<div ng-controller="videoController">
-    <div class="row">
-        <div class="col s12 blue z-depth-1">
-            <a href="javascript:void(0)" class="white-text" ng-click="backDetail()"><i class="mdi-navigation-arrow-back small"></i></a>
+<md-content ng-controller="videoController">
+    <md-toolbar>
+        <a href="javascript:void(0)" class="white-text" ng-click="backDetail()"><i class="mdi-navigation-arrow-back small"></i></a>
+    </md-toolbar>
+    <md-content>
+        <div>
+            <tube-youtube playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="s12">
-                <tube-youtube playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s3">
+        <div layout="row" layout-align="center center">
+            <div flex="25">
                 <tube-repeat repeat="doRepeat()" one="doOne()" none="doNone()"></tube-repeat>
             </div>
-            <div class="col s3">
-                <tube-shuffle shuffle="doShuffle()" none="doShuffleNone()" ></tube-shuffle>
+            <div flex="25">
+                <tube-shuffle shuffle="doShuffle()" none="doShuffleNone()"></tube-shuffle>
             </div>
-            <div class="col s3">
-              <a href="javascript:void(0);" ng-click="prev();"><i class="mdi-av-fast-rewind small black-text"></i></a>  
+            <div flex="25">
+                <a href="javascript:void(0);" ng-click="prev();"><i class="mdi-av-fast-rewind small black-text"></i></a>
             </div>
-            <div class="col s3">
-               <a href="javascript:void(0)" ng-click="next();"><i class="mdi-av-fast-forward small black-text"></i></a> 
+            <div flex="25">
+                <a href="javascript:void(0)" ng-click="next();"><i class="mdi-av-fast-forward small black-text"></i></a>
             </div>
         </div>
-
-    </div>
-</div>
+    </md-content>
+</md-content>

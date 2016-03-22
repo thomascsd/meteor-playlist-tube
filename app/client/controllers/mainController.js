@@ -51,7 +51,7 @@ function mainController($scope, youtubeService) {
         $scope.detailVisible = true;
         $scope.mainVisible = false;
         $scope.videoVisible = false;
-        $scope.detailUrl = 'client/viewss/detail.html';
+        $scope.detailUrl = 'client/views/detail.html';
     }
 
     function goVideo(e, data) {
