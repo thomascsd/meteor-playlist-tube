@@ -28,7 +28,7 @@ PlaylistDetail.prototype.list = function() {
 
 
     var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID +
-    '&access_token=' + this.token;
+        '&access_token=' + this.token;
 
     if (this.pageToken) {
         url += '&pageToken=' + this.pageToken;
@@ -54,7 +54,6 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly'),
         encodeURIComponent('https://www.googleapis.com/auth/youtubepartner')
     ];
-
 
     const service = {
         clientID: Meteor.settings.public.clientID,
@@ -82,7 +81,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                         //alert('appConfig.clientSecret:' + appConfig.clientSecret);
 
                         return service.getToken(requestToken);
-   
+
                         ref.close();
                     }
                 });
@@ -104,7 +103,6 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                 requestToken = url.split("code=")[1];
             }
 
-
             data = "client_id=" + service.clientID + "&client_secret=" + service.secretID +
                 "&redirect_uri=" + service.host + "/callback" + "&grant_type=authorization_code" +
                 "&code=" + requestToken;
@@ -115,7 +113,10 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                     data: data
                 })
                 .success(function(data) {
-                    defer.resolve(data.access_token);
+                    defer.resolve({
+                        token: data.access_token,
+                        refreshToken: data.refresh_token
+                    });
                 })
                 .error(function(data, status) {
                     defer.reject("ERROR: " + JSON.stringify(data));
@@ -128,7 +129,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
             return url.indexOf('callback') !== -1
         },
 
-        refreshToken: function() {
+        refreshToken: function(refreshToken) {
             var url = '';
         },
 

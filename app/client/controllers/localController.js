@@ -16,8 +16,8 @@ function localController($scope, youtubeService, userDataService) {
         //取得token值，不一樣時做替換
         youtubeService.getToken().then((data) => {
             if (data !== token) {
-                token = data;
-                userDataService.token(token);
+                userDataService.token(data.token);
+                userDataService.refreshToken(data.refreshToken);
             }
         });
 
@@ -26,7 +26,8 @@ function localController($scope, youtubeService, userDataService) {
 
     } else if (youtubeService.isLogingIn()) {
         youtubeService.getToken().then((data) => {
-            userDataService.token(data);
+          userDataService.token(data.token);
+          userDataService.refreshToken(data.refreshToken);
         });
     }
 

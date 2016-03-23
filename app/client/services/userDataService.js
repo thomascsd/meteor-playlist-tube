@@ -8,13 +8,21 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
         currentPlaylistID: '',
         currentVideo: {},
 
-        /** Save token data */
+        /** Set or get token data */
         token: function(token) {
             if (token) {
                 $localStorage.token = token;
-            }
-            else {
+            } else {
                 return $localStorage.token;
+            }
+        },
+
+        /** Set or get refresh token */
+        refreshToken: function(token) {
+            if (token) {
+                $localStorage.refreshToken = token;
+            } else {
+                return $localStorage.refreshToken;
             }
         },
 

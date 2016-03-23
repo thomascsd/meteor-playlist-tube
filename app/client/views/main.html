@@ -8,7 +8,7 @@
         <md-tabs md-swipe-content="true" md-stretch-tabs="always">
             <md-tab md-on-select="localSelected()">
                 <md-tab-label>
-                    <md-icon md-font-set="fa fa-list-ul"></md-icon> Local
+                    <md-icon>storage</md-icon> Local
                 </md-tab-label>
                 <md-tab-body>
                     <div id="local" ng-include="'client/views/local.html'"></div>
@@ -16,7 +16,7 @@
             </md-tab>
             <md-tab md-on-select="playlistSelected()">
                 <md-tab-label>
-                    <md-icon md-font-set="fa fa-youtube"></md-icon> My YouTube
+                    <md-icon>playlist_play</md-icon> My YouTube
                 </md-tab-label>
                 <md-tab-body>
                     <div id="playlist" ng-include="playlistUrl"></div>
