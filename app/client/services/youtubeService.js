@@ -1,52 +1,6 @@
 'use strict';
 const app = angular.module('tubeApp');
 
-function PlaylistDetail(token, playlistID) {
-    this.items = [];
-    this.pageToken = '';
-    this.isBusy = false;
-    this.token = token;
-    this.playlistID = playlistID;
-    this.totalResults = 0;
-    this.position = 0;
-}
-
-PlaylistDetail.prototype.list = function() {
-    var self = this;
-    if (this.isBusy) {
-        return;
-    }
-    this.isBusy = true;
-
-    if (this.totalResults !== 0 &&
-        this.position !== 0 &&
-        this.position === (this.totalResults - 1)) {
-        //目前item的index到達集合的長度時，不取得資料
-        this.isBusy = false;
-        return;
-    }
-
-
-    var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID +
-        '&access_token=' + this.token;
-
-    if (this.pageToken) {
-        url += '&pageToken=' + this.pageToken;
-    }
-
-    $http.get(url).then(function(data) {
-        var yitems = data.data.items;
-        Array.prototype.push.apply(self.items, yitems);
-        self.pageToken = data.data.nextPageToken;
-        self.isBusy = false;
-        self.totalResults = data.data.pageInfo.totalResults;
-
-        var lastItem = yitems[yitems.length - 1];
-        self.position = lastItem.snippet.position;
-    });
-
-}
-
 /** 連結Youtube的service */
 app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $cordovaOauth, $q) {
     const appscopes = [
@@ -54,6 +8,52 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly'),
         encodeURIComponent('https://www.googleapis.com/auth/youtubepartner')
     ];
+
+    function PlaylistDetail(token, playlistID) {
+        this.items = [];
+        this.pageToken = '';
+        this.isBusy = false;
+        this.token = token;
+        this.playlistID = playlistID;
+        this.totalResults = 0;
+        this.position = 0;
+    }
+
+    PlaylistDetail.prototype.list = function() {
+        var self = this;
+        if (this.isBusy) {
+            return;
+        }
+        this.isBusy = true;
+
+        if (this.totalResults !== 0 &&
+            this.position !== 0 &&
+            this.position === (this.totalResults - 1)) {
+            //目前item的index到達集合的長度時，不取得資料
+            this.isBusy = false;
+            return;
+        }
+
+
+        var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID +
+            '&access_token=' + this.token;
+
+        if (this.pageToken) {
+            url += '&pageToken=' + this.pageToken;
+        }
+
+        $http.get(url).then(function(data) {
+            var yitems = data.data.items;
+            Array.prototype.push.apply(self.items, yitems);
+            self.pageToken = data.data.nextPageToken;
+            self.isBusy = false;
+            self.totalResults = data.data.pageInfo.totalResults;
+
+            var lastItem = yitems[yitems.length - 1];
+            self.position = lastItem.snippet.position;
+        });
+
+    }
 
     const service = {
         clientID: Meteor.settings.public.clientID,

@@ -9,7 +9,7 @@ app.directive('tubeShuffle', function() {
             shuffle: '&',
             none: '&'
         },
-        templateUrl: 'client/views/shuffleTemplate.html',
+        templateUrl: 'client/views/shuffle.html',
         replace: true,
         controller: function($scope) {
             $scope.doShuffle = function() {

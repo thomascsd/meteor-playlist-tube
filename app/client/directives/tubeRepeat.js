@@ -10,7 +10,7 @@ app.directive('tubeRepeat', function() {
             one: '&',
             none: '&'
         },
-        templateUrl: 'client/views/repeatTemplate.html',
+        templateUrl: 'client/views/repeat.html',
         replace: true,
         controller: function($scope) {
             $scope.doRepeat = function() {
