@@ -9,20 +9,11 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
         currentVideo: {},
 
         /** Set or get token data */
-        token: function(token) {
+        tokenData: function(token) {
             if (token) {
                 $localStorage.token = token;
             } else {
                 return $localStorage.token;
-            }
-        },
-
-        /** Set or get refresh token */
-        refreshToken: function(token) {
-            if (token) {
-                $localStorage.refreshToken = token;
-            } else {
-                return $localStorage.refreshToken;
             }
         },
 

@@ -7,10 +7,10 @@ app.controller('detailController', ['$scope', 'youtubeService', 'userDataService
 
 /** Playlist detail controller */
 function detailController($scope, youtubeService, userDataService) {
-    var token = userDataService.token();
+    var data = userDataService.tokenData();
     var playlistID = userDataService.currentPlaylistID;
 
-    $scope.detail = youtubeService.getPlaylistDetail(token, playlistID);
+    $scope.detail = youtubeService.getPlaylistDetail(data.token, playlistID);
 
     $scope.goBack = function() {
         $scope.$emit('tube.goBack');

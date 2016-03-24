@@ -1,47 +1,27 @@
 'use strict';
 const app = angular.module('tubeApp');
 
-app.controller('myYoutubeController', ['$scope', 'youtubeService', 'userDataService', myYoutubeController]);
+app.controller('myYoutubeController', ['$scope','$mdToast', 'youtubeService', 'userDataService', myYoutubeController]);
 
 /** Youtube controller */
-function myYoutubeController($scope, youtubeService, userDataService) {
+function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
     $scope.items = [];
-    var token = userDataService.token();
+    var data = userDataService.tokenData();
 
-    if (token) {
-        //alert('token:' + token);
-
-        /*if (appConfig.debug) {
-            //取得token值，不一樣時做替換
-            newToken = youtubeService.getToken();
-            if (newToken !== token) {
-                token = newToken;
-                userDataService.token(token);
-            }
-
-        }*/
-
-        //有token
-        getPlaylists(token);
-        //$location.path('playlist');
+    if (data && data.token) {
+        //Has token
+        getPlaylists(data.token);
 
     }
-    else {
-        //無token
-        /*if (appConfig.debug) {
-            token = youtubeService.getToken();
-            userDataService.token(token);
-        }*/
-        //$location.path('playlist');
-    }
+
 
     $scope.login = function() {
-        youtubeService.login().then(function(token) {
+        youtubeService.login().then(function(data) {
             //alert('myYoutubeController - token:' + token);
-            userDataService.token(token);
-            getPlaylists(token);
+            userDataService.tokenData(data);
+            getPlaylists(data.token);
         }).catch(function(data) {
-            alert(data);
+            alert(JSON.stringify(data));
         });
     }
 
@@ -49,7 +29,7 @@ function myYoutubeController($scope, youtubeService, userDataService) {
     $scope.addItem = function(item) {
         var added = userDataService.list.add(item);
         if (!added) {
-            //toast(item.snippet.title + ' added', 3000);
+            $mdToast.showSimple(item.snippet.title + ' added'); 
         }
     };
 

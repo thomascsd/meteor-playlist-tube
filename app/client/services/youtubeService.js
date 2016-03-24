@@ -87,7 +87,8 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                 });
 
                 return defer.promise;
-            } else {
+            }
+            else {
                 window.location.href = url;
             }
 
@@ -112,25 +113,62 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                     url: "https://www.googleapis.com/oauth2/v4/token",
                     data: data
                 })
-                .success(function(data) {
-                    defer.resolve({
-                        token: data.access_token,
-                        refreshToken: data.refresh_token
-                    });
-                })
-                .error(function(data, status) {
-                    defer.reject("ERROR: " + JSON.stringify(data));
-                });
+                .success(service.getTokenSuccess(defer))
+                .error(service.getTokenError(defer));
 
             return defer.promise;
         },
+
+        getTokenSuccess: function(defer) {
+            return function(data) {
+                let time = new Date();
+                time.setSeconds(time.getSeconds() + data.expire_in);
+
+                defer.resolve({
+                    token: data.access_token,
+                    refreshToken: data.refresh_token,
+                    expire: time
+                });
+            };
+        },
+        getTokenError: function(defer) {
+            return function(data, status) {
+                defer.reject("ERROR: " + JSON.stringify(data));
+            };
+        },
+
         isLogingIn: function() {
             const url = location.href;
-            return url.indexOf('callback') !== -1
+            return url.indexOf('callback') !== -1;
+        },
+
+        /** Check wheler token is expired */
+        isExpired: function(expire) {
+            let now = new Date();
+
+            now.setMinutes(now.getMinutes() - 2);
+
+            if (now >= expire) {
+                return true;
+            }
+
+            return false;
         },
 
         refreshToken: function(refreshToken) {
-            var url = '';
+            let defer = $q.defer();
+            const data = 'client_id=' + service.clientID + '&client_secret=' + service.secretID + '&' +
+                'refresh_token=' + refreshToken + '&grant_type=refresh_token';
+
+            $http({
+                    method: 'post',
+                    url: 'https://www.googleapis.com/oauth2/v4/token',
+                    data: data
+                })
+                .success(service.getTokenSuccess(defer))
+                .error(service.getTokenError(defer));
+
+            return defer.promise;
         },
 
         /** Get user's playlist */
