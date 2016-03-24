@@ -11,9 +11,7 @@ function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
     if (data && data.token) {
         //Has token
         getPlaylists(data.token);
-
     }
-
 
     $scope.login = function() {
         youtubeService.login().then(function(data) {
@@ -29,7 +27,7 @@ function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
     $scope.addItem = function(item) {
         var added = userDataService.list.add(item);
         if (!added) {
-            $mdToast.showSimple(item.snippet.title + ' added'); 
+            $mdToast.showSimple(item.snippet.title + ' added');
         }
     };
 

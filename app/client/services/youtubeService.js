@@ -34,7 +34,6 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
             return;
         }
 
-
         var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=' + this.playlistID +
             '&access_token=' + this.token;
 
@@ -87,8 +86,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                 });
 
                 return defer.promise;
-            }
-            else {
+            } else {
                 window.location.href = url;
             }
 
@@ -119,14 +117,18 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
             return defer.promise;
         },
 
-        getTokenSuccess: function(defer) {
+        getTokenSuccess: function(defer, refreshToken) {
             return function(data) {
                 let time = new Date();
                 time.setSeconds(time.getSeconds() + data.expire_in);
 
+                if (!refreshToken) {
+                    refreshToken = data.refresh_token;
+                }
+
                 defer.resolve({
                     token: data.access_token,
-                    refreshToken: data.refresh_token,
+                    refreshToken: refreshToken,
                     expire: time
                 });
             };
@@ -143,29 +145,31 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         },
 
         /** Check wheler token is expired */
-        isExpired: function(expire) {
+        isExpired: function(data) {
             let now = new Date();
+            if (data) {
+                now.setMinutes(now.getMinutes() - 2);
 
-            now.setMinutes(now.getMinutes() - 2);
+                if (now >= data.expire) {
+                    return true;
+                }
 
-            if (now >= expire) {
-                return true;
             }
 
             return false;
         },
 
-        refreshToken: function(refreshToken) {
+        reGetToken: function(tokenData) {
             let defer = $q.defer();
             const data = 'client_id=' + service.clientID + '&client_secret=' + service.secretID + '&' +
-                'refresh_token=' + refreshToken + '&grant_type=refresh_token';
+                'refresh_token=' + data.refreshToken + '&grant_type=refresh_token';
 
             $http({
                     method: 'post',
                     url: 'https://www.googleapis.com/oauth2/v4/token',
                     data: data
                 })
-                .success(service.getTokenSuccess(defer))
+                .success(service.getTokenSuccess(defer, tokenData.refreshToken))
                 .error(service.getTokenError(defer));
 
             return defer.promise;

@@ -2,17 +2,31 @@
 
 const app = angular.module('tubeApp');
 
-app.controller('mainController', ['$scope', 'youtubeService', mainController]);
+app.controller('mainController', ['$scope', 'youtubeService', 'userDataService', mainController]);
 
 /** 主畫面的Controller */
-function mainController($scope, youtubeService) {
+function mainController($scope, youtubeService, userDataService) {
     let enableLocal = true;
+    let data = userDataService.tokenData();
+    const isExpired = youtubeService.isExpired(data);
     $scope.playlistUrl = '';
     $scope.detailUrl = '';
     $scope.videoUrl = '';
     $scope.detailVisible = false;
     $scope.mainVisible = true;
     $scope.videoVisible = false;
+    $scope.tabSelectedIndex = 0;
+
+    if (data && isExpired) {
+        youtubeService.reGetToken().then((data) => {
+            userDataService.tokenData(newData);
+        });
+    } else if (youtubeService.isLogingIn()) {
+        youtubeService.getToken().then((data) => {
+            $scope.tabSelectedIndex = 1;
+            userDataService.tokenData(data);
+        });
+    }
 
     $scope.localSelected = function() {
         $scope.tab1 = true;
@@ -30,22 +44,6 @@ function mainController($scope, youtubeService) {
             $scope.playlistUrl = 'client/views/myYoutube.html';
         }
     };
-
-    /*if (true) { //appConfig.debug
-        //debug
-        var accessToken = youtubeService.getToken();
-
-        if (accessToken) {
-            enableLocal = false;
-        }
-    }
-
-    if (enableLocal) {
-        $scope.localSelected();
-    }
-    else {
-        $scope.playlistSelected();
-    }*/
 
     function goDetail(e, data) {
         $scope.detailVisible = true;
@@ -76,7 +74,6 @@ function mainController($scope, youtubeService) {
         $scope.videoVisible = false;
         $scope.videoUrl = '';
     }
-
 
     $scope.$on('tube.detail', goDetail);
     $scope.$on('tube.video', goVideo);
