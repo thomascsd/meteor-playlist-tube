@@ -86,8 +86,7 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
                 });
 
                 return defer.promise;
-            }
-            else {
+            } else {
                 window.location.href = url;
             }
 
@@ -121,7 +120,7 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
         getTokenSuccess: function(defer, refreshToken) {
             return function(data) {
                 let time = new Date();
-                time.setSeconds(time.getSeconds() + data.expire_in);
+                time.setSeconds(time.getSeconds() + data.expires_in);
 
                 if (!refreshToken) {
                     refreshToken = data.refresh_token;
@@ -165,6 +164,7 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
             const data = 'client_id=' + service.clientID + '&client_secret=' + service.secretID + '&' +
                 'refresh_token=' + tokenData.refreshToken + '&grant_type=refresh_token';
 
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
             $http({
                     method: 'post',
                     url: 'https://www.googleapis.com/oauth2/v4/token',

@@ -7,7 +7,7 @@
     <span flex></span>
   </md-toolbar>
   <md-progress-linear md-mode="indeterminate" ng-show="detail.isBusy"></md-progress-linear>
-  <md-content height-auto-resizer>
+  <md-content >
     <div layout="row" layout-align="center center" infinite-scroll="detail.list()" infinite-scroll-disabled="detail.isBusy" infinite-scroll-distance="1">
       <md-list flex="90">
         <md-list-item ng-click="playVideo(item)" ng-repeat="item in detail.items">

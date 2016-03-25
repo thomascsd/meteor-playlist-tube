@@ -17,6 +17,10 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
             }
         },
 
+        clear: function() {
+            $localStorage.$reset();
+        },
+
         /** Manage playlist */
         list: {
             add: function(item) {

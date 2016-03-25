@@ -9,8 +9,8 @@ function localController($scope, youtubeService, userDataService) {
     const list = userDataService.list;
     $scope.items = list.getItems();
 
-    $scope.deleteItems = function() {
-        list.deleteItems();
+    $scope.clear = function() {
+        userDataService.clear();
         $scope.items = list.getItems();
     };
 

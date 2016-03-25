@@ -18,10 +18,10 @@ function mainController($scope, youtubeService, userDataService) {
     $scope.tabSelectedIndex = 0;
 
     if (data && isExpired) {
-        youtubeService.reGetToken().then((data) => {
+        youtubeService.reGetToken(data).then((newData) => {
             userDataService.tokenData(newData);
         });
-    } else if (youtubeService.isLogingIn()) {
+    } else if (!data && youtubeService.isLogingIn()) {
         youtubeService.getToken().then((data) => {
             $scope.tabSelectedIndex = 1;
             userDataService.tokenData(data);

@@ -1,5 +1,5 @@
 <md-content layout="row" layout-align="center center" ng-controller="myYoutubeController">
-  <div  flex="90" height-auto-resizer>
+  <div flex="90">
     <md-list ng-show="items.length !== 0">
       <md-list-item class="md-2-line" ng-repeat="item in items">
         <img src="{{item.snippet.thumbnails.default.url}}" alt="" class="md-avatar" />
@@ -15,7 +15,7 @@
         </div>
       </md-list-item>
     </md-list>
-    <div layout="row" layout-align="center center" ng-show="items.length === 0">
+    <div layout="row" layout-align="center center" ng-show="items.length === 0" height-auto-resizer>
       <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
     </div>
 
