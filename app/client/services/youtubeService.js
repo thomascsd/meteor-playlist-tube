@@ -2,7 +2,7 @@
 const app = angular.module('tubeApp');
 
 /** 連結Youtube的service */
-app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $cordovaOauth, $q) {
+app.factory('youtubeService', ['$http', '$q', function($http, $q) {
     const appscopes = [
         encodeURIComponent('https://www.googleapis.com/auth/youtube'),
         encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly'),
@@ -86,7 +86,8 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
                 });
 
                 return defer.promise;
-            } else {
+            }
+            else {
                 window.location.href = url;
             }
 
@@ -162,7 +163,7 @@ app.factory('youtubeService', ['$http', '$cordovaOauth', '$q', function($http, $
         reGetToken: function(tokenData) {
             let defer = $q.defer();
             const data = 'client_id=' + service.clientID + '&client_secret=' + service.secretID + '&' +
-                'refresh_token=' + data.refreshToken + '&grant_type=refresh_token';
+                'refresh_token=' + tokenData.refreshToken + '&grant_type=refresh_token';
 
             $http({
                     method: 'post',
