@@ -6,9 +6,9 @@
         <h3 flex></h3>
         <span flex></span>
     </md-toolbar>
-    <md-content layout="row" layout-align="center center" height-auto-resizer>
+    <md-content layout="row" layout-align="center start" height-auto-resizer>
         <div flex="90">
-            <tube-youtube playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
+            <tube-youtube class="h300" playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
             <div layout="row" layout-align="center center">
                 <div flex="25">
                     <tube-repeat repeat="doRepeat()" one="doOne()" none="doNone()"></tube-repeat>

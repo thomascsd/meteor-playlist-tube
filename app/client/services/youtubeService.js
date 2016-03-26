@@ -120,7 +120,8 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
         getTokenSuccess: function(defer, refreshToken) {
             return function(data) {
                 let time = new Date();
-                time.setSeconds(time.getSeconds() + data.expires_in);
+                const hour = data.expires_in / (60 * 60);
+                time.setHours(time.getHours() + hour);
 
                 if (!refreshToken) {
                     refreshToken = data.refresh_token;
@@ -147,10 +148,18 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
         /** Check wheler token is expired */
         isExpired: function(data) {
             let now = new Date();
+            let nowTrick, expiredTrick
             if (data) {
                 now.setMinutes(now.getMinutes() - 2);
+                nowTrick = now.getTime();
 
-                if (now >= data.expire) {
+                if (typeof data.expire === 'string') {
+                    expiredTrick = new Date(data.expire).getTime();
+                } else {
+                    expiredTrick = data.expire.getTime();
+                }
+
+                if (nowTrick >= expiredTrick) {
                     return true;
                 }
 
