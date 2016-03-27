@@ -31,9 +31,11 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
                     $localStorage.list = [];
                 }
 
-                index = _.findIndex($localStorage.list, function(o) {
+                /*index = _.findIndex($localStorage.list, function(o) {
                     return o.id === item.id;
-                });
+                });*/
+
+                index = _.indexOf($localStorage.list, item.id);
                 added = index !== -1;
 
                 if (!added) {

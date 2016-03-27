@@ -8,11 +8,12 @@
               {{item.snippet.title}}
           </h3>
         </div>
-        <div>
-          <a href="javascript:void(0)" class="secondary-content" ng-click="addItem(item)">
+        <div class="mTop">
+          <a href="javascript:void(0)"  ng-click="addItem(item)">
             <md-icon>playlist_add</md-icon>
           </a>
         </div>
+      <md-divider ng-if="!$last"></md-divider>
       </md-list-item>
     </md-list>
     <div layout="row" layout-align="center center" ng-show="items.length === 0" height-auto-resizer>
