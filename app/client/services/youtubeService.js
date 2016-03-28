@@ -60,8 +60,6 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
         host: Meteor.settings.public.host,
         login: function() {
             let requestToken;
-            let debug = true;
-            const host = '';
             const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + service.clientID +
                 '&redirect_uri=' + service.host + '/callback&scope=' + appscopes.join(" ") +
                 '&approval_prompt=force&response_type=code';
