@@ -1,4 +1,4 @@
-<md-content layout="row" layout-align="center center" ng-controller="myYoutubeController">
+<md-content layout="row" layout-align="center center" layout-padding ng-controller="myYoutubeController">
   <div flex="90">
     <md-list ng-show="items.length !== 0">
       <md-list-item ng-repeat="item in items" ng-click="gotoDetail(item)">
@@ -6,7 +6,7 @@
         <p class="">
           {{item.snippet.title}}
         </p>
-        <md-icon ng-click="addItem(item)">playlist_add</md-icon>
+        <md-icon class="md-secondary" ng-click="addItem(item)">playlist_add</md-icon>
         <md-divider ng-if="!$last"></md-divider>
       </md-list-item>
     </md-list>

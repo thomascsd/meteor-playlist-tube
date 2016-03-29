@@ -62,7 +62,7 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
             let requestToken;
             const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + service.clientID +
                 '&redirect_uri=' + service.host + '/callback&scope=' + appscopes.join(" ") +
-                '&approval_prompt=force&response_type=code';
+                '&approval_prompt=force&response_type=code&access_type=offline';
 
             if (Meteor.isCordova) {
                 var defer = $q.defer();
