@@ -21,6 +21,11 @@ function localController($scope, youtubeService, userDataService) {
         //$location.path('detail/' + item.id);
     };
 
+    $scope.delete = function(item) {
+        list.deleteItem(item);
+        reloadLocal();
+    }
+
     /** local playlist reload*/
     function reloadLocal() {
         $scope.items = list.getItems();

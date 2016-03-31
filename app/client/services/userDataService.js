@@ -12,7 +12,8 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
         tokenData: function(token) {
             if (token) {
                 $localStorage.token = token;
-            } else {
+            }
+            else {
                 return $localStorage.token;
             }
         },
@@ -31,11 +32,11 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
                     $localStorage.list = [];
                 }
 
-                /*index = _.findIndex($localStorage.list, function(o) {
+                index = _.findIndex($localStorage.list, function(o) {
                     return o.id === item.id;
-                });*/
+                });
 
-                index = _.indexOf($localStorage.list, item.id);
+                //index = _.indexOf($localStorage.list, item.id);
                 added = index !== -1;
 
                 if (!added) {
@@ -46,6 +47,9 @@ app.factory('userDataService', ['$localStorage', function($localStorage) {
             },
             getItems: function() {
                 return $localStorage.list;
+            },
+            deleteItem: function(item) {
+                $localStorage.list = _.without($localStorage.list, item);
             },
             deleteItems: function() {
                 delete $localStorage.list;
