@@ -12,8 +12,8 @@ tracker                 # Meteor's client-side reactive programming library
 
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 
-angular
 angular:angular-material
-underscore
 standard-minifier-css
 standard-minifier-js
+angular
+stevezhu:lodash
