@@ -1,32 +1,36 @@
 <md-content layout-padding ng-controller="videoController">
-    <md-toolbar layout="row" layout-align="center center">
-        <a href="javascript:void(0)" ng-click="backDetail()">
-            <md-icon>arrow_back</md-icon>
-        </a>
-        <h3 flex></h3>
-        <span flex></span>
-    </md-toolbar>
-    <md-content layout="row" layout-align="center start" height-auto-resizer>
-        <div flex="90">
-            <tube-youtube class="h300" playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
-            <div layout="row" layout-align="center center">
-                <div flex="25">
-                    <tube-repeat repeat="doRepeat()" one="doOne()" none="doNone()"></tube-repeat>
-                </div>
-                <div flex="25">
-                    <tube-shuffle shuffle="doShuffle()" none="doShuffleNone()"></tube-shuffle>
-                </div>
-                <div flex="25">
-                    <a href="javascript:void(0);" ng-click="prev();">
-                        <md-icon>fast_forward</md-icon>
-                    </a>
-                </div>
-                <div flex="25">
-                    <a href="javascript:void(0)" ng-click="next();">
-                        <md-icon>fast_rewind</md-icon>
-                    </a>
-                </div>
-            </div>
+  <md-toolbar layout="row" layout-align="center center">
+    <div class="md-toolbar-tools">
+      <md-buton ng-click="backDetail()">
+        <md-icon>arrow_back</md-icon>
+      </md-buton>
+      <h2>
+        <span>{{title}}</span>
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-content class="container" layout="row" layout-align="center start" height-auto-resizer>
+    <div flex="90">
+      <tube-youtube class="h300" playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
+      <div layout="row" layout-align="center center">
+        <div flex="25">
+          <tube-repeat repeat="doRepeat()" one="doOne()" none="doNone()"></tube-repeat>
         </div>
-    </md-content>
+        <div flex="25">
+          <tube-shuffle shuffle="doShuffle()" none="doShuffleNone()"></tube-shuffle>
+        </div>
+        <div flex="25">
+          <a href="javascript:void(0);" ng-click="prev();">
+            <md-icon>fast_forward</md-icon>
+          </a>
+        </div>
+        <div flex="25">
+          <a href="javascript:void(0)" ng-click="next();">
+            <md-icon>fast_rewind</md-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </md-content>
 </md-content>

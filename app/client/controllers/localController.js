@@ -15,7 +15,7 @@ function localController($scope, youtubeService, userDataService) {
     };
 
     $scope.goDetail = function(item) {
-        userDataService.currentPlaylistID = item.id;
+        userDataService.currentPlaylist = item;
         //Go to playlist items
         $scope.$emit('tube.detail');
         //$location.path('detail/' + item.id);

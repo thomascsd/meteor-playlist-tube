@@ -8,9 +8,10 @@ app.controller('detailController', ['$scope', 'youtubeService', 'userDataService
 /** Playlist detail controller */
 function detailController($scope, youtubeService, userDataService) {
     var data = userDataService.tokenData();
-    var playlistID = userDataService.currentPlaylistID;
+    var playlist = userDataService.currentPlaylist;
 
-    $scope.detail = youtubeService.getPlaylistDetail(data.token, playlistID);
+    $scope.detail = youtubeService.getPlaylistDetail(data.token, playlist.id);
+    $scope.title = playlist.snippet.title;
 
     $scope.goBack = function() {
         $scope.$emit('tube.goBack');
@@ -19,7 +20,8 @@ function detailController($scope, youtubeService, userDataService) {
     $scope.playVideo = function(item) {
         userDataService.currentVideo = {
             id: item.snippet.resourceId.videoId,
-            index: item.snippet.position
+            index: item.snippet.position,
+            title: item.snippet.title
         };
         //Go to play video page
         $scope.$emit('tube.video');

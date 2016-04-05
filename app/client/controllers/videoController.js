@@ -5,12 +5,16 @@ const app = angular.module('tubeApp');
 app.controller('videoController', videoController);
 /** Play video controller */
 function videoController($scope, userDataService) {
+    const video = userDataService.currentVideo;
+    const playlist = userDataService.currentPlaylist;
+
     $scope.video = {
-        id: userDataService.currentVideo.id,
-        index: userDataService.currentVideo.index,
-        playlistId: userDataService.currentPlaylistID
+        id: video.id,
+        index: video.index,
+        playlistId: playlist.id
     };
 
+    $scope.title = video.title;
 
     $scope.backDetail = function() {
         $scope.$emit('tube.backDetail');

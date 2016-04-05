@@ -33,7 +33,7 @@ function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
 
     //go to playlistItems
     $scope.gotoDetail = function(item) {
-        userDataService.currentPlaylistID = item.id;
+        userDataService.currentPlaylist = item;
         //Go to playlist items
         $scope.$emit('tube.detail');
         //$location.path('detail/' + item.id);

@@ -1,13 +1,17 @@
-<md-content layout-padding ng-controller="detailController">
-  <md-toolbar layout="row" layout-align="center center">
-    <a flex href="javascript:void(0)" ng-click="goBack()">
-      <md-icon>arrow_back</md-icon>
-    </a>
-    <h3 flex></h3>
-    <span flex></span>
+<md-content ng-controller="detailController">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="goBack()">
+        <md-icon>arrow_back</md-icon>
+      </md-button>
+      <h2>
+        <span>{{title}}</span>
+      </h2>
+      <span flex></span>
+    </div>
   </md-toolbar>
   <md-progress-linear md-mode="indeterminate" ng-show="detail.isBusy"></md-progress-linear>
-  <md-content>
+  <md-content layout-padding>
     <div layout="row" layout-align="center center" infinite-scroll="detail.list()" infinite-scroll-disabled="detail.isBusy" infinite-scroll-distance="1">
       <md-list flex="90">
         <md-list-item ng-repeat="item in detail.items" ng-click="playVideo(item)">
