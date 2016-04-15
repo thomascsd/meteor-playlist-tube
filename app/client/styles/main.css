@@ -1,7 +1,10 @@
 .h300 {
     height: 300px;
 }
+.md-blue {
+    color: #9c27b0;
+}
 
-.mTop{
-  margin-top: 20px;
+.md-black{
+  color: #000;
 }
