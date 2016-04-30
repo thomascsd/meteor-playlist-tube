@@ -1,12 +1,10 @@
-<div ng-controller="mainController">
-  <div id="mainCotainer" ng-show="mainVisible">
+<div ng-controller="mainController as vm">
+  <div id="mainCotainer" ng-show="vm.mainVisible">
     <md-toolbar>
-      <h5>
-                Playlist Tube
-              </h5>
+      <h5>Playlist Tube</h5>
     </md-toolbar>
     <md-tabs md-swipe-content="true" md-stretch-tabs="always" md-dynamic-height="true">
-      <md-tab md-on-select="localSelected()">
+      <md-tab md-on-select="vm.localSelected()">
         <md-tab-label>
           <md-icon>storage</md-icon> Local
         </md-tab-label>
@@ -14,21 +12,21 @@
           <div id="local" ng-include="'client/views/local.html'"></div>
         </md-tab-body>
       </md-tab>
-      <md-tab md-on-select="playlistSelected()">
+      <md-tab md-on-select="vm.playlistSelected()">
         <md-tab-label>
           <md-icon>playlist_play</md-icon> My YouTube
         </md-tab-label>
         <md-tab-body height-auto-resizer>
-          <div id="playlist" ng-include="playlistUrl"></div>
+          <div id="playlist" ng-include="vm.playlistUrl"></div>
         </md-tab-body>
       </md-tab>
     </md-tabs>
   </div>
   <div id="detailContainer">
-    <div ng-include="detailUrl" ng-show="detailVisible"></div>
+    <div ng-include="vm.detailUrl" ng-show="vm.detailVisible"></div>
   </div>
   <div id="videoContainer">
-    <div ng-include="videoUrl" ng-show="videoVisible"></div>
+    <div ng-include="vm.videoUrl" ng-show="vm.videoVisible"></div>
   </div>
 
   <footer class="mainFooter"></footer>

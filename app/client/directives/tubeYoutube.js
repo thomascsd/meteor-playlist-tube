@@ -1,10 +1,14 @@
 'use strict';
-const app = angular.module('tubeApp');
 let player = null;
 let enableRepeatOne = false;
 
-/** Youtube plyaer*/
-app.directive('tubeYoutube', function($window) {
+angular
+    .module('tubeApp')
+    .directive('tubeYoutube', tubeYoutube);
+
+tubeYoutube.$inject = ['$window'];
+
+function tubeYoutube($window) {
     return {
         restrict: "E",
         scope: {
@@ -112,5 +116,5 @@ app.directive('tubeYoutube', function($window) {
             }
 
         }
-    }
-});
+    };
+}

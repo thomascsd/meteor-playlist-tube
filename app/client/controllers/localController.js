@@ -1,36 +1,45 @@
 'use strict';
 
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .controller('localController', localController);
 
-app.controller('localController', ['$scope', 'youtubeService', 'userDataService', localController]);
+localController.$inject = ['$scope', 'youtubeService', 'userDataService'];
 
 /** Local controller */
 function localController($scope, youtubeService, userDataService) {
+    const vm = this;
     const list = userDataService.list;
-    $scope.items = list.getItems();
 
-    $scope.clear = function() {
+    vm.items = list.getItems();
+    vm.clear = clear;
+    vm.goDetail = goDetail;
+    vm.delete = deleteItem;
+
+    $scope.$on('tube.reloadLocal', reloadLocal);
+    //$location.path('local');
+
+    function clear() {
         userDataService.clear();
-        $scope.items = list.getItems();
+        vm.items = list.getItems();
     };
 
-    $scope.goDetail = function(item) {
+    function goDetail(item) {
         userDataService.currentPlaylist = item;
         //Go to playlist items
         $scope.$emit('tube.detail');
         //$location.path('detail/' + item.id);
-    };
+    }
 
-    $scope.delete = function(item) {
+    function deleteItem(item) {
         list.deleteItem(item);
         reloadLocal();
     }
 
     /** local playlist reload*/
     function reloadLocal() {
-        $scope.items = list.getItems();
+        vm.items = list.getItems();
     }
 
-    $scope.$on('tube.reloadLocal', reloadLocal);
-    //$location.path('local');
+
 }

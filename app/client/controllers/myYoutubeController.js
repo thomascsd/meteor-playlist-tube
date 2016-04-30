@@ -1,19 +1,31 @@
 'use strict';
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .controller('myYoutubeController', myYoutubeController);
 
-app.controller('myYoutubeController', ['$scope','$mdToast', 'youtubeService', 'userDataService', myYoutubeController]);
+myYoutubeController.$inject = ['$scope', '$mdToast', 'youtubeService', 'userDataService'];
 
 /** Youtube controller */
-function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
-    $scope.items = [];
+function myYoutubeController($scope, $mdToast, youtubeService, userDataService) {
+    const vm = this;
     var data = userDataService.tokenData();
+
+    vm.items = [];
 
     if (data && data.token) {
         //Has token
         getPlaylists(data.token);
     }
 
-    $scope.login = function() {
+    vm.login = login;
+
+    //Add item to local playlist
+    vm.addItem = addItem;
+
+    //go to playlistItems
+    vm.gotoDetail = gotoDetail;
+
+    function login() {
         youtubeService.login().then(function(data) {
             //alert('myYoutubeController - token:' + token);
             userDataService.tokenData(data);
@@ -23,26 +35,24 @@ function myYoutubeController($scope,$mdToast, youtubeService, userDataService) {
         });
     }
 
-    //Add item to local playlist
-    $scope.addItem = function(item) {
+    function addItem(item) {
         var added = userDataService.list.add(item);
         if (!added) {
             $mdToast.showSimple(item.snippet.title + ' added');
         }
-    };
+    }
 
-    //go to playlistItems
-    $scope.gotoDetail = function(item) {
+    function gotoDetail(item) {
         userDataService.currentPlaylist = item;
         //Go to playlist items
         $scope.$emit('tube.detail');
         //$location.path('detail/' + item.id);
-    };
+    }
 
     function getPlaylists(token) {
         //alert('exc getPlaylists');
         youtubeService.getPlaylists(token).then(function(data) {
-            $scope.items = data.data.items;
+            vm.items = data.data.items;
         });
     }
 }

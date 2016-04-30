@@ -1,32 +1,32 @@
-<md-content layout-padding ng-controller="videoController">
+<md-content layout-padding ng-controller="videoController as vm">
   <md-toolbar layout="row" layout-align="center center">
     <div class="md-toolbar-tools">
-      <md-buton ng-click="backDetail()">
+      <md-buton ng-click="vm.backDetail()">
         <md-icon>arrow_back</md-icon>
       </md-buton>
       <h2>
-        <span>{{title}}</span>
+        <span>{{vm.title}}</span>
       </h2>
       <span flex></span>
     </div>
   </md-toolbar>
   <md-content class="container" layout="row" layout-align="center start" height-auto-resizer>
     <div flex="90">
-      <tube-youtube class="h300" playlistid="{{video.playlistId}}" index="{{video.index}}"></tube-youtube>
+      <tube-youtube class="h300" playlistid="{{vm.video.playlistId}}" index="{{vm.video.index}}"></tube-youtube>
       <div layout="row" layout-align="center center">
         <div flex="25">
-          <tube-repeat repeat="doRepeat()" one="doOne()" none="doNone()"></tube-repeat>
+          <tube-repeat repeat="vm.doRepeat()" one="vm.doOne()" none="vm.doNone()"></tube-repeat>
         </div>
         <div flex="25">
-          <tube-shuffle shuffle="doShuffle()" none="doShuffleNone()"></tube-shuffle>
+          <tube-shuffle shuffle="vm.doShuffle()" none="vm.doShuffleNone()"></tube-shuffle>
         </div>
         <div flex="25">
-          <a href="javascript:void(0);" ng-click="prev();">
+          <a href="javascript:void(0);" ng-click="vm.prev();">
             <md-icon>fast_forward</md-icon>
           </a>
         </div>
         <div flex="25">
-          <a href="javascript:void(0)" ng-click="next();">
+          <a href="javascript:void(0)" ng-click="vm.next();">
             <md-icon>fast_rewind</md-icon>
           </a>
         </div>

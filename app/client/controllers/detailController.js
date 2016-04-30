@@ -1,23 +1,27 @@
 'use strict';
 
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .controller('detailController', detailController);
 
-app.controller('detailController', ['$scope', 'youtubeService', 'userDataService', detailController]);
-
+detailController.$inject = ['$scope', 'youtubeService', 'userDataService'];
 
 /** Playlist detail controller */
 function detailController($scope, youtubeService, userDataService) {
-    var data = userDataService.tokenData();
-    var playlist = userDataService.currentPlaylist;
+    const vm = this;
+    const data = userDataService.tokenData();
+    const playlist = userDataService.currentPlaylist;
 
-    $scope.detail = youtubeService.getPlaylistDetail(data.token, playlist.id);
-    $scope.title = playlist.snippet.title;
+    vm.detail = youtubeService.getPlaylistDetail(data.token, playlist.id);
+    vm.title = playlist.snippet.title;
+    vm.goBack = goBack;
+    vm.playVideo = playVideo;
 
-    $scope.goBack = function() {
+    function goBack() {
         $scope.$emit('tube.goBack');
     }
 
-    $scope.playVideo = function(item) {
+    function playVideo(item) {
         userDataService.currentVideo = {
             id: item.snippet.resourceId.videoId,
             index: item.snippet.position,

@@ -1,53 +1,57 @@
 'use strict';
 
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .controller('videoController', videoController);
 
-app.controller('videoController', videoController);
+videoController.$inject = ['$scope', 'userDataService'];
+
 /** Play video controller */
 function videoController($scope, userDataService) {
     const video = userDataService.currentVideo;
     const playlist = userDataService.currentPlaylist;
+    const vm = this;
 
-    $scope.video = {
+    vm.video = {
         id: video.id,
         index: video.index,
         playlistId: playlist.id
     };
 
-    $scope.title = video.title;
+    vm.title = video.title;
 
-    $scope.backDetail = function() {
+    vm.backDetail = function() {
         $scope.$emit('tube.backDetail');
     };
 
-    $scope.prev = function() {
+    vm.prev = function() {
         $scope.$broadcast('tube.prev');
     };
 
-    $scope.next = function() {
+    vm.next = function() {
         $scope.$broadcast('tube.next');
     };
 
     //playlist repeat
-    $scope.doRepeat = function() {
+    vm.doRepeat = function() {
         $scope.$broadcast('tube.repeat');
     };
 
     //Video repeat
-    $scope.doOne = function() {
+    vm.doOne = function() {
         $scope.$broadcast('tube.repeatOne');
     };
 
-    $scope.doNone = function() {
+    vm.doNone = function() {
         $scope.$broadcast('tube.repeatNone');
     };
 
     //Playlist shuffle
-    $scope.doShuffle = function() {
+    vm.doShuffle = function() {
         $scope.$broadcast('tube.shuffle', true);
     };
 
-    $scope.doShuffleNone = function() {
+    vm.doShuffleNone = function() {
         $scope.$broadcast('tube.shuffle', false);
     };
 }

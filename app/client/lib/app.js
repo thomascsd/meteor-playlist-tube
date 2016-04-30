@@ -1,10 +1,14 @@
 'use strict';
-'global angular';
+/*global angular*/
 
-let app = angular.module('tubeApp', ['angular-meteor', 'ngMaterial', 'ngStorage', 'infinite-scroll', 'heightAutoResizer']);
+angular
+    .module('tubeApp', ['angular-meteor', 'ngMaterial', 'ngStorage', 'infinite-scroll', 'heightAutoResizer'])
+    .config(appConfig);
 
-app.config(['$mdThemingProvider', function($mdThemingProvider) {
+appConfig.$inject = ['$mdThemingProvider'];
+
+function appConfig($mdThemingProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('purple')
         .accentPalette('brown');
-}]);
+}
