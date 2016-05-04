@@ -4,10 +4,10 @@ angular
     .module('tubeApp')
     .controller('localController', localController);
 
-localController.$inject = ['$scope', 'youtubeService', 'userDataService'];
+localController.$inject = ['$scope', '$mdDialog', 'youtubeService', 'userDataService'];
 
 /** Local controller */
-function localController($scope, youtubeService, userDataService) {
+function localController($scope, $mdDialog, youtubeService, userDataService) {
     const vm = this;
     const list = userDataService.list;
 
@@ -15,6 +15,7 @@ function localController($scope, youtubeService, userDataService) {
     vm.clear = clear;
     vm.goDetail = goDetail;
     vm.delete = deleteItem;
+    vm.openSearchDialog = openSearchDialog;
 
     $scope.$on('tube.reloadLocal', reloadLocal);
     //$location.path('local');
@@ -22,7 +23,7 @@ function localController($scope, youtubeService, userDataService) {
     function clear() {
         userDataService.clear();
         vm.items = list.getItems();
-    };
+    }
 
     function goDetail(item) {
         userDataService.currentPlaylist = item;
@@ -34,6 +35,14 @@ function localController($scope, youtubeService, userDataService) {
     function deleteItem(item) {
         list.deleteItem(item);
         reloadLocal();
+    }
+
+    function openSearchDialog() {
+        $mdDialog.show({
+            templateUrl: 'client/views/search.html',
+            controller: 'searchController',
+            controllerAs: 'search'
+        });
     }
 
     /** local playlist reload*/

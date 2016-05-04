@@ -1,8 +1,12 @@
 'use strict';
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .factory('youtubeService', youtubeService);
+
+youtubeService.$inject = ['$http', '$q'];
 
 /** 連結Youtube的service */
-app.factory('youtubeService', ['$http', '$q', function($http, $q) {
+function youtubeService($http, $q) {
     const appscopes = [
         encodeURIComponent('https://www.googleapis.com/auth/youtube'),
         encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly'),
@@ -77,14 +81,15 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
                         //alert('appConfig.clientID:' + appConfig.clientID);
                         //alert('appConfig.clientSecret:' + appConfig.clientSecret);
 
-                        return service.getToken(requestToken);
-
                         ref.close();
+
+                        return service.getToken(requestToken);
                     }
                 });
 
                 return defer.promise;
-            } else {
+            }
+            else {
                 window.location.href = url;
             }
 
@@ -96,7 +101,7 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
             if (!requestToken) {
-                const url = location.href;
+                const url = window.location.href;
                 requestToken = url.split("code=")[1];
             }
 
@@ -139,21 +144,23 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
         },
 
         isLogingIn: function() {
-            const url = location.href;
+            const url = window.location.href;
             return url.indexOf('callback') !== -1;
         },
 
         /** Check wheler token is expired */
         isExpired: function(data) {
             let now = new Date();
-            let nowTrick, expiredTrick
+            let nowTrick, expiredTrick;
+
             if (data) {
                 now.setMinutes(now.getMinutes() - 2);
                 nowTrick = now.getTime();
 
                 if (typeof data.expire === 'string') {
                     expiredTrick = new Date(data.expire).getTime();
-                } else {
+                }
+                else {
                     expiredTrick = data.expire.getTime();
                 }
 
@@ -195,13 +202,15 @@ app.factory('youtubeService', ['$http', '$q', function($http, $q) {
             return new PlaylistDetail(token, playlistID);
         },
 
-        search: function() {
+        search: function(text) {
+            let defer = $q.defer();
 
+            return defer.promise;
         }
     };
 
     return service;
-}]);
+}
 
 if (typeof String.prototype.startsWith != 'function') {
     String.prototype.startsWith = function(str) {
