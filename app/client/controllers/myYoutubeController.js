@@ -26,17 +26,17 @@ function myYoutubeController($scope, $mdToast, youtubeService, userDataService) 
     vm.gotoDetail = gotoDetail;
 
     function login() {
-        youtubeService.login().then(function(data) {
+        youtubeService.login().then(function (data) {
             //alert('myYoutubeController - token:' + token);
             userDataService.tokenData(data);
             getPlaylists(data.token);
-        }).catch(function(data) {
+        }).catch(function (data) {
             alert(JSON.stringify(data));
         });
     }
 
     function addItem(item) {
-        var added = userDataService.list.add(item);
+        var added = userDataService.list.add('P', item);
         if (!added) {
             $mdToast.showSimple(item.snippet.title + ' added');
         }
@@ -51,7 +51,7 @@ function myYoutubeController($scope, $mdToast, youtubeService, userDataService) 
 
     function getPlaylists(token) {
         //alert('exc getPlaylists');
-        youtubeService.getPlaylists(token).then(function(data) {
+        youtubeService.getPlaylists(token).then(function (data) {
             vm.items = data.data.items;
         });
     }

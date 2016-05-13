@@ -4,9 +4,9 @@ angular
     .module('tubeApp')
     .controller('searchController', searchController);
 
-searchController.$inject = ['youtubeService'];
+searchController.$inject = ['$mdDialog', 'youtubeService', 'userDataService'];
 
-function searchController(youtubeService) {
+function searchController($mdDialog, youtubeService, userDataService) {
     const vm = this;
 
     vm.items = [];
@@ -23,12 +23,16 @@ function searchController(youtubeService) {
 
     }
 
-    function addItem(item) {
+    function addItem(type, item) {
+        const added = userDataService.addItem(type, item);
 
+        if (!added) {
+            $mdToast.showSimple(item.snippet.title + ' added');
+        }
     }
 
     function closeDialog() {
-
+        $mdDialog.cancel();
     }
 
 }

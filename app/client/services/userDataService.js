@@ -1,61 +1,73 @@
 'use strict';
 
-const app = angular.module('tubeApp');
+angular
+    .module('tubeApp')
+    .factory('userDataService', userDataService);
+
+userDataService.$inject = ['$localStorage'];
 
 /** 記錄User的資料 */
-app.factory('userDataService', ['$localStorage', function($localStorage) {
+function userDataService($localStorage) {
     const userData = {
         currentPlaylist: {},
         currentVideo: {},
 
         /** Set or get token data */
-        tokenData: function(token) {
+        tokenData: function (token) {
             if (token) {
                 $localStorage.token = token;
-            }
-            else {
+            } else {
                 return $localStorage.token;
             }
         },
 
-        clear: function() {
+        clear: function () {
             $localStorage.$reset();
         },
 
         /** Manage playlist */
         list: {
-            add: function(item) {
-                var index = 0;
-                var added = false;
+            add: function (item) {
+                let index = 0;
+                let added = false;
 
                 if (!$localStorage.list) {
-                    $localStorage.list = [];
+                    $localStorage.list = {};
                 }
 
-                index = _.findIndex($localStorage.list, function(o) {
-                    return o.id === item.id;
+                /*
+                {
+                    P:[] //playlist,
+                    V:[] //video
+                }
+                */
+
+                _.each($localStorage.list, function (value, key) {
+                    index = _.findIndex(value, function (o) {
+                        return o.id === item.id;
+                    });
+
+                    //index = _.indexOf($localStorage.list, item.id);
+                    added = index !== -1;
+
+                    if (!added) {
+                        $localStorage.list[key].push(item);
+                    }
                 });
-
-                //index = _.indexOf($localStorage.list, item.id);
-                added = index !== -1;
-
-                if (!added) {
-                    $localStorage.list.push(item);
-                }
 
                 return added;
             },
-            getItems: function() {
+            getItems: function () {
                 return $localStorage.list;
             },
-            deleteItem: function(item) {
-                $localStorage.list = _.without($localStorage.list, item);
+            deleteItem: function (type, item) {
+                $localStorage.list = _.without($localStorage.list[type], item);
             },
-            deleteItems: function() {
+            deleteItems: function () {
                 delete $localStorage.list;
             }
         }
     };
 
     return userData;
-}]);
+}

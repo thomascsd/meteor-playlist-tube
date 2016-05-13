@@ -1,6 +1,15 @@
 <md-dialog aria-label="List dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Search</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="search.closeDialog()">
+                <md-icon aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
     <md-dialog-content>
-        <md-contetn>
+        <div class="md-dialog-content">
             <form method="post" action="#" ng-submt="search.searchYoutube($event)">
                 <input type="text" name="searchText" ng-model="search.queryText" />
             </form>
@@ -15,9 +24,6 @@
                     <md-divider ng-if="!$last"></md-divider>
                 </md-list-item>
             </md-list>
-        </md-contetn>
+        </div>
     </md-dialog-content>
-    <md-dialog-actions>
-        <md-button ng-click="search.closeDialog()" class="md-primary">Close</md-button>
-    </md-dialog-actions>
 </md-dialog>
