@@ -4,9 +4,9 @@ angular
     .module('tubeApp')
     .controller('searchController', searchController);
 
-searchController.$inject = ['$mdDialog', 'youtubeService', 'userDataService'];
+searchController.$inject = ['$mdDialog', '$mdToast', 'youtubeService', 'userDataService'];
 
-function searchController($mdDialog, youtubeService, userDataService) {
+function searchController($mdDialog, $mdToast, youtubeService, userDataService) {
     const vm = this;
 
     vm.items = [];
