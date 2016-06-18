@@ -33,7 +33,7 @@ function localController($scope, $mdDialog, youtubeService, userDataService) {
     }
 
     function deleteItem(item) {
-        list.deleteItem(item);
+        list.deleteItem('P', item);
         reloadLocal();
     }
 
