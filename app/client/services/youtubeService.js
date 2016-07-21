@@ -23,7 +23,7 @@ function youtubeService($http, $q) {
         this.position = 0;
     }
 
-    PlaylistDetail.prototype.list = function() {
+    PlaylistDetail.prototype.list = function () {
         var self = this;
         if (this.isBusy) {
             return;
@@ -45,7 +45,7 @@ function youtubeService($http, $q) {
             url += '&pageToken=' + this.pageToken;
         }
 
-        $http.get(url).then(function(data) {
+        $http.get(url).then(function (data) {
             var yitems = data.data.items;
             Array.prototype.push.apply(self.items, yitems);
             self.pageToken = data.data.nextPageToken;
@@ -62,7 +62,7 @@ function youtubeService($http, $q) {
         clientID: Meteor.settings.public.clientID,
         secretID: Meteor.settings.public.secretID,
         host: Meteor.settings.public.host,
-        login: function() {
+        login: function () {
             let requestToken;
             const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + service.clientID +
                 '&redirect_uri=' + service.host + '/callback&scope=' + appscopes.join(" ") +
@@ -73,7 +73,7 @@ function youtubeService($http, $q) {
                 //return $cordovaOauth.google(clientID, appscopes);
                 var ref = window.open(url, '_blank', 'location=no');
 
-                ref.addEventListener('loadstart', function(event) {
+                ref.addEventListener('loadstart', function (event) {
                     if ((event.url).startsWith("http://localhost/callback")) {
                         requestToken = (event.url).split("access_token=")[1];
 
@@ -94,7 +94,7 @@ function youtubeService($http, $q) {
             }
 
         },
-        getToken: function(requestToken) {
+        getToken: function (requestToken) {
             const defer = $q.defer();
             let data = '';
 
@@ -110,18 +110,18 @@ function youtubeService($http, $q) {
                 "&code=" + requestToken;
 
             $http({
-                    method: "post",
-                    url: "https://www.googleapis.com/oauth2/v4/token",
-                    data: data
-                })
+                method: "post",
+                url: "https://www.googleapis.com/oauth2/v4/token",
+                data: data
+            })
                 .success(service.getTokenSuccess(defer))
-                .error(service.getTokenError(defer));
+                .error(service.getError(defer));
 
             return defer.promise;
         },
 
-        getTokenSuccess: function(defer, refreshToken) {
-            return function(data) {
+        getTokenSuccess: function (defer, refreshToken) {
+            return function (data) {
                 let time = new Date();
                 const hour = data.expires_in / (60 * 60);
                 time.setHours(time.getHours() + hour);
@@ -137,19 +137,19 @@ function youtubeService($http, $q) {
                 });
             };
         },
-        getTokenError: function(defer) {
-            return function(data, status) {
+        getError: function (defer) {
+            return function (data, status) {
                 defer.reject("ERROR: " + JSON.stringify(data));
             };
         },
 
-        isLogingIn: function() {
+        isLogingIn: function () {
             const url = window.location.href;
             return url.indexOf('callback') !== -1;
         },
 
         /** Check wheler token is expired */
-        isExpired: function(data) {
+        isExpired: function (data) {
             let now = new Date();
             let nowTrick, expiredTrick;
 
@@ -173,37 +173,49 @@ function youtubeService($http, $q) {
             return false;
         },
 
-        reGetToken: function(tokenData) {
+        reGetToken: function (tokenData) {
             let defer = $q.defer();
             const data = 'client_id=' + service.clientID + '&client_secret=' + service.secretID + '&' +
                 'refresh_token=' + tokenData.refreshToken + '&grant_type=refresh_token';
 
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
             $http({
-                    method: 'post',
-                    url: 'https://www.googleapis.com/oauth2/v4/token',
-                    data: data
-                })
+                method: 'post',
+                url: 'https://www.googleapis.com/oauth2/v4/token',
+                data: data
+            })
                 .success(service.getTokenSuccess(defer, tokenData.refreshToken))
-                .error(service.getTokenError(defer));
+                .error(service.getError(defer));
 
             return defer.promise;
         },
 
         /** Get user's playlist */
-        getPlaylists: function(token) {
+        getPlaylists: function (token) {
             const url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&mine=true&access_token=' + token;
 
             return $http.get(url);
         },
 
         /** Get playlist item list */
-        getPlaylistDetail: function(token, playlistID) {
+        getPlaylistDetail: function (token, playlistID) {
             return new PlaylistDetail(token, playlistID);
         },
 
-        search: function(text) {
+        search: function (text) {
             let defer = $q.defer();
+            const url = 'https://www.googleapis.com/youtube/v3/search';
+            const data = 'part=snippet&q=' + text + '&maxResults=15';
+
+            $http({
+                method: 'get',
+                url: url,
+                data: data
+            })
+            .success(function(data){
+                defer.resolve(data.items);
+            })
+            .error(service.getError(defer));
 
             return defer.promise;
         }
@@ -213,7 +225,7 @@ function youtubeService($http, $q) {
 }
 
 if (typeof String.prototype.startsWith != 'function') {
-    String.prototype.startsWith = function(str) {
+    String.prototype.startsWith = function (str) {
         return this.indexOf(str) === 0;
     };
 }
